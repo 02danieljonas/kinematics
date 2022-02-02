@@ -8,6 +8,8 @@ segmentLength =0.5
 fig, ax = plt.subplots()
 
 def setUp():
+    ax.set_xlim(0,3)
+    ax.set_ylim(0,3)
     ax.plot([0, 1, 3], [0, 1, 3], color="white")
 
 def updateScreen():
@@ -29,15 +31,7 @@ ydata=2
 ax.plot(xSegmentList, ySegmentList)
 
 def withinBounds(xPosition, yPositon):
-    if xPosition > 2.99999:
-        xPosition = 2.99999
-    elif xPosition <.00001:
-        xPosition = .00001
 
-    if yPositon > 2.99999:
-        yPositon = 2.99999
-    elif yPositon < .00001:
-        yPositon = .00001
 
     return xPosition, yPositon
 
@@ -53,7 +47,7 @@ def on_move(data):
         ydata=data.ydata
 
     xSegmentList[1], ySegmentList[1] = withinBounds(xdata, ydata)
-    xSegmentList[0], ySegmentList[0] = withinBounds(xdata-segmentLength, ydata-segmentLength)
+    xSegmentList[0], ySegmentList[0] = (xdata-segmentLength, ydata-segmentLength)
 
     updateScreen()
 
