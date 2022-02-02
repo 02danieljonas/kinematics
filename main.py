@@ -1,7 +1,6 @@
 from matplotlib.backend_bases import MouseButton
 import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib
 
 segmentLength =0.5
 fig, ax = plt.subplots()
@@ -21,6 +20,7 @@ ySegmentList = [0, 2]
 ax.plot(xSegmentList, ySegmentList)
 
 def on_move(data):
+    
     xSegmentList[1], ySegmentList[1] = data.xdata, data.ydata
     xSegmentList[0], ySegmentList[0] = data.xdata-segmentLength, data.ydata-segmentLength
 
