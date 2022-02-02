@@ -3,43 +3,50 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 
-t = [0, 1]
-s = [0,1]
 fig, ax = plt.subplots()
-ax.plot(t, s)
+def setUp():
+    ax.plot([0, 1, 3], [0, 1, 3], color="white")
 
-def reload():
-    ax.cla()
-    ax.plot(t, s)
+def update():
+    setUp()
+    plt.cla()
+    plt.show()
 
-def update(xmouse, ymouse):
-    global t, s
-    if xmouse>1:
-        xmouse=.999
-    if xmouse<0:
-        xmouse=.001
-    if ymouse>1:
-        ymouse=.999
-    if ymouse<0:
-        ymouse=.001
-    t = [0, 1, xmouse]
-    s = [0, 1, ymouse]
+setUp()
 
+xSegment = [1.5, 1.5]
+ySegment = [0, 2]
+ax.plot(xSegment, ySegment)
 
+def withinBounds(xposition, ypositon):
+    if xposition is not None:
+        if xposition > 2.99999:
+            xposition = 2.99999
+        elif xposition <.00001:
+            xposition = .00001
 
-def on_move(event):
-    global t, s
-    # get the x and y pixel coords
-    x, y = event.x, event.y
-    if event.inaxes:
-        ax = event.inaxes  # the axes instance
-        update(event.xdata, event.ydata)
-        reload()
-        print('data coords %f %f' % (event.xdata, event.ydata))
+    if ypositon is not None:
+        if ypositon > 2.99999:
+            ypositon = 2.99999
+        elif ypositon < .00001:
+            ypositon = .00001
+    return xposition, ypositon
 
-def on_click(event):
-    reload()
+def on_move(data):
+    xdata=data.xdata
+    ydata=data.ydata
+
+    xSegment[1], ySegment[1] = withinBounds(xdata, ydata)
+
+    print(xSegment,ySegment)
+
+    plt.cla()
+
+    setUp()
+    ax.plot(xSegment, ySegment)
+
+    plt.show()
+
 
 binding_id = plt.connect('motion_notify_event', on_move)
-
 plt.show()
