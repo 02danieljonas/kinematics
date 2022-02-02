@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 
-
 segmentLength =0.5
 fig, ax = plt.subplots()
 
@@ -13,7 +12,7 @@ def setUp():
     ax.plot([0, 1, 3], [0, 1, 3], color="white")
 
 def updateScreen():
-    plt.cla()
+    plt.cla() #this clears the screen, so make sure it is first
 
     setUp()
     ax.plot(xSegmentList, ySegmentList)
@@ -21,33 +20,14 @@ def updateScreen():
 
 setUp()
 
-
-
-
 xSegmentList = [1.5, 1.5]
-xdata=1.5
 ySegmentList = [0, 2]
-ydata=2
 ax.plot(xSegmentList, ySegmentList)
-
-def withinBounds(xPosition, yPositon):
-
-
-    return xPosition, yPositon
-
-def withinSegmentBounds(xPosition, yPosition):
-    pass
 
 
 def on_move(data):
-    global xdata, ydata
-    if data.xdata is not None:
-        xdata=data.xdata
-    if data.ydata is not None:
-        ydata=data.ydata
-
-    xSegmentList[1], ySegmentList[1] = withinBounds(xdata, ydata)
-    xSegmentList[0], ySegmentList[0] = (xdata-segmentLength, ydata-segmentLength)
+    xSegmentList[1], ySegmentList[1] = data.xdata, data.ydata
+    xSegmentList[0], ySegmentList[0] = data.xdata-segmentLength, data.ydata-segmentLength
 
     updateScreen()
 
