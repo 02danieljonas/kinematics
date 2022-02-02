@@ -3,16 +3,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
 
+
+segmentLength =0.5
 fig, ax = plt.subplots()
 
 def setUp():
     ax.plot([0, 1, 3], [0, 1, 3], color="white")
 
-def update():
+def updateScreen():
     plt.cla()
 
     setUp()
-    ax.plot(xSegment, ySegment)
+    ax.plot(xSegmentList, ySegmentList)
     plt.show()
 
 setUp()
@@ -20,9 +22,11 @@ setUp()
 
 
 
-xSegment = [1.5, 1.5]
-ySegment = [0, 2]
-ax.plot(xSegment, ySegment)
+xSegmentList = [1.5, 1.5]
+xdata=1.5
+ySegmentList = [0, 2]
+ydata=2
+ax.plot(xSegmentList, ySegmentList)
 
 def withinBounds(xPosition, yPositon):
     if xPosition > 2.99999:
@@ -37,16 +41,21 @@ def withinBounds(xPosition, yPositon):
 
     return xPosition, yPositon
 
+def withinSegmentBounds(xPosition, yPosition):
+    pass
 
 
 def on_move(data):
+    global xdata, ydata
     if data.xdata is not None:
         xdata=data.xdata
     if data.ydata is not None:
         ydata=data.ydata
 
-    xSegment[1], ySegment[1] = withinBounds(xdata, ydata)
-    update()
+    xSegmentList[1], ySegmentList[1] = withinBounds(xdata, ydata)
+    xSegmentList[0], ySegmentList[0] = withinBounds(xdata-segmentLength, ydata-segmentLength)
+
+    updateScreen()
 
 
 binding_id = plt.connect('motion_notify_event', on_move)
