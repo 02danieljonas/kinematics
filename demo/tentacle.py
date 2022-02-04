@@ -5,3 +5,4 @@ class Segments:
         self.thick_segment = thick_segment
     def move(self, xposition, yposition):
         pass
+    
