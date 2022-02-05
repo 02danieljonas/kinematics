@@ -20,18 +20,45 @@ def draw_window():
     screen.fill(background_color)
 
 class Segment():
-    def __init__(self, xPos, yPos, len, angle):
-        self.xPos = xPos
-        self.yPos = yPos
-        self.len = len
-        self.angle = math.radians(angle)
-        self.xVariation= len * math.cos(self.angle)
-        self.yVariation= len * math.sin(self.angle)
+    
+    def findPos2(X, Y, length, angle):
+        A = length * math.cos(angle)
+        B= length * math.sin(angle)
+        return (X+A, Y+B)
+    
+    def __init__(self, *args):#xPos, yPos, len, angle):
         
-        self.xPos2 = self.xPos+self.xVariation
-        self.yPos2 = self.xPos+self.yVariation
+        if len(args)==4:
+            self.list = [self]
+            self.xPos = args[0]
+            self.yPos = args[1]
+            self.len = args[2]
+            
+            self.angle = math.radians(args[3])
+            self.xVariation= self.len * math.cos(self.angle)
+            self.yVariation= self.len * math.sin(self.angle)
+            
+            self.xPos2 = self.xPos+self.xVariation
+            self.yPos2 = self.xPos+self.yVariation
 
-        pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
+            pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
+
+        elif len(args)==3:
+            args[0].list.append(self)
+            self.xPos = args[0].xPos
+            self.yPos = args[0].yPos
+            self.len = args[2]
+            # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.len, self.angle)
+            self.angle = math.radians(args[2])
+            self.xVariation= self.len * math.cos(self.angle)
+            self.yVariation= self.len * math.sin(self.angle)
+            
+            self.xPos2 = self.xPos+self.xVariation
+            self.yPos2 = self.xPos+self.yVariation
+
+            pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
+
+
 
 
     def update(self, x, y):
@@ -46,6 +73,8 @@ class Segment():
         pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
     def show(self, x, y):
+        self.xPos2 = x
+        self.yPos2 = y
         pygame.draw.line(screen, (0,255,255), (x, y), (x+self.xVariation, y+self.yVariation))
 
 
@@ -53,11 +82,11 @@ class Segment():
 
 
 jack = Segment(0, 0, 40, 90)
-steve = Segment(jack.xPos2, jack.yPos2, 40, 45)
+steve = Segment(jack, 40, 45)
 
 def make_thing(x, y):
     jack.show(x, y)
-    steve.show(x, y)
+    steve.show(jack.xPos2, jack.yPos2)
 
 
 def main():
