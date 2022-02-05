@@ -20,21 +20,44 @@ def draw_window():
     screen.fill(background_color)
 
 class Segment():
-    def __init__(self, position1, len, angle):
-        self.position1 = position1
+    def __init__(self, xPos, yPos, len, angle):
+        self.xPos = xPos
+        self.yPos = yPos
         self.len = len
         self.angle = math.radians(angle)
-        dx= len * math.cos(self.angle)
-        dy= len * math.sin(self.angle)
-        self.position2 = (self.position1[0]+dx, self.position1[1]+dy)
+        self.xVariation= len * math.cos(self.angle)
+        self.yVariation= len * math.sin(self.angle)
+        
+        self.xPos2 = self.xPos+self.xVariation
+        self.yPos2 = self.xPos+self.yVariation
 
-    def show(self):
-        pygame.draw.line(screen, (0,255,255), self.position1, self.position2)
+        pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
+
+    def update(self, x, y):
+        self.xPos = x
+        self.yPos = y
+        self.xVariation= len * math.cos(self.angle)
+        self.yVariation= len * math.sin(self.angle)
+
+        self.xPos2 = self.xPos+self.xVariation
+        self.yPos2 = self.xPos+self.yVariation
+        
+        pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
+
+    def show(self, x, y):
+        pygame.draw.line(screen, (0,255,255), (x, y), (x+self.xVariation, y+self.yVariation))
+
+
+
+
+
+jack = Segment(0, 0, 40, 90)
+steve = Segment(jack.xPos2, jack.yPos2, 40, 45)
 
 def make_thing(x, y):
-    jack = Segment((x, y), 40, 90)
-    jack.show()
+    jack.show(x, y)
+    steve.show(x, y)
 
 
 def main():
