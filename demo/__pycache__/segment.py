@@ -5,5 +5,3 @@ class Segment():
         self.len = len
         self.angle = angle
     
-    def show():
-        

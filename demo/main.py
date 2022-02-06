@@ -5,7 +5,7 @@ from random import randint
 pygame.init()
 
 
-FPS=60
+FPS=600
 SPEED=10
 WIDTH, HEIGHT = 900,500
 middleX, middleY=900/2,500/2
@@ -31,7 +31,7 @@ class Segment():
             self.yPos = args[1]
             self.length = args[2]
             
-            self.angle = args[3]
+            self.angle = math.radians(args[3])
             self.xVariation= self.length * math.cos(self.angle)
             self.yVariation= self.length * math.sin(self.angle)
             
@@ -47,7 +47,7 @@ class Segment():
             self.yPos = args[0].yPos
             self.length = args[1]
             # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.length, self.angle)
-            self.angle = args[2]
+            self.angle = math.radians(args[2])
             self.xVariation= self.length * math.cos(self.angle)
             self.yVariation= self.length * math.sin(self.angle)
             
@@ -73,9 +73,13 @@ class Segment():
         self.yPos2 = self.xPos+self.yVariation
         
         pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
-
+    def move(x, y):
+        pass
+        #to move self.xpos += speed to which ever direction you want
+        #to move self.ypos += speed to which ever direction you want
 
     def show(self, x, y):
+        #itterate over the list
         self.xPos2 = x
         self.yPos2 = y
         pygame.draw.line(screen, (0,255,255), (x, y), (x+self.xVariation, y+self.yVariation))
@@ -84,8 +88,8 @@ class Segment():
 
 
 
-jack = Segment(0, 0, 40, 90)
-steve = Segment(jack, 40, 45)
+jack = Segment(0, 0, 40, 0)
+steve = Segment(jack, 40, 180)
 # steven = Segment(0, 0, 40, 3.14)
 # maker = Segment(steven, 40, 4.71239)
 
