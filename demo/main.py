@@ -21,15 +21,14 @@ def draw_window():
 
 class Segment():
     
-    def findPos2(X, Y, length, angle):
-        A = length * math.cos(angle)
-        B= length * math.sin(angle)
-        return (X+A, Y+B)
+
     
-    def __init__(self, *args):#xPos, yPos, len, angle):
+    def __init__(self, *args):#(xPos, yPos, len, angle)  or (Head, len, angle)
         
         if len(args)==4:
-            self.list = [self]
+            self.list = ["The head is ", self]
+            print(self.list, )
+
             self.xPos = args[0]
             self.yPos = args[1]
             self.len = args[2]
@@ -45,6 +44,7 @@ class Segment():
 
         elif len(args)==3:
             args[0].list.append(self)
+            print(args[0].list)
             self.xPos = args[0].xPos
             self.yPos = args[0].yPos
             self.len = args[2]
@@ -58,7 +58,10 @@ class Segment():
 
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
-
+    def findPos2(X, Y, length, angle):
+        A = length * math.cos(angle)
+        B= length * math.sin(angle)
+        return (X+A, Y+B)
 
 
     def update(self, x, y):
@@ -83,10 +86,14 @@ class Segment():
 
 jack = Segment(0, 0, 40, 90)
 steve = Segment(jack, 40, 45)
+steven = Segment(0, 0, 40, 90)
+maker = Segment(jack, 40, 45)
 
 def make_thing(x, y):
     jack.show(x, y)
     steve.show(jack.xPos2, jack.yPos2)
+    steven.show(x, y)
+    maker.show(steven.xPos2, steven.yPos2)
 
 
 def main():
@@ -104,5 +111,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#I want 
