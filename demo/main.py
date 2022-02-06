@@ -19,11 +19,9 @@ def draw_window():
     pygame.display.update()
     screen.fill(background_color)
 
-class Segment():
-    
 
-    
-    def __init__(self, *args):#(xPos, yPos, len, angle)  or (Head, len, angle)
+class Segment():
+    def __init__(self, *args):#(xPos, yPos, length, angle)  or (Head, length, angle)
         
         if len(args)==4:
             self.list = ["The head is ", self]
@@ -31,11 +29,11 @@ class Segment():
 
             self.xPos = args[0]
             self.yPos = args[1]
-            self.len = args[2]
+            self.length = args[2]
             
-            self.angle = math.radians(args[3])
-            self.xVariation= self.len * math.cos(self.angle)
-            self.yVariation= self.len * math.sin(self.angle)
+            self.angle = args[3]
+            self.xVariation= self.length * math.cos(self.angle)
+            self.yVariation= self.length * math.sin(self.angle)
             
             self.xPos2 = self.xPos+self.xVariation
             self.yPos2 = self.xPos+self.yVariation
@@ -47,18 +45,19 @@ class Segment():
             print(args[0].list)
             self.xPos = args[0].xPos
             self.yPos = args[0].yPos
-            self.len = args[2]
-            # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.len, self.angle)
-            self.angle = math.radians(args[2])
-            self.xVariation= self.len * math.cos(self.angle)
-            self.yVariation= self.len * math.sin(self.angle)
+            self.length = args[1]
+            # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.length, self.angle)
+            self.angle = args[2]
+            self.xVariation= self.length * math.cos(self.angle)
+            self.yVariation= self.length * math.sin(self.angle)
             
             self.xPos2 = self.xPos+self.xVariation
             self.yPos2 = self.xPos+self.yVariation
 
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
-    def findPos2(X, Y, length, angle):
+
+    def __findPos2(X, Y, length, angle):
         A = length * math.cos(angle)
         B= length * math.sin(angle)
         return (X+A, Y+B)
@@ -67,13 +66,14 @@ class Segment():
     def update(self, x, y):
         self.xPos = x
         self.yPos = y
-        self.xVariation= len * math.cos(self.angle)
-        self.yVariation= len * math.sin(self.angle)
+        self.xVariation= self.length * math.cos(self.angle)
+        self.yVariation= self.length * math.sin(self.angle)
 
         self.xPos2 = self.xPos+self.xVariation
         self.yPos2 = self.xPos+self.yVariation
         
         pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
+
 
     def show(self, x, y):
         self.xPos2 = x
@@ -86,14 +86,14 @@ class Segment():
 
 jack = Segment(0, 0, 40, 90)
 steve = Segment(jack, 40, 45)
-steven = Segment(0, 0, 40, 90)
-maker = Segment(jack, 40, 45)
+# steven = Segment(0, 0, 40, 3.14)
+# maker = Segment(steven, 40, 4.71239)
 
 def make_thing(x, y):
     jack.show(x, y)
     steve.show(jack.xPos2, jack.yPos2)
-    steven.show(x, y)
-    maker.show(steven.xPos2, steven.yPos2)
+    # steven.show(x, y)
+    # maker.show(steven.xPos2, steven.yPos2)
 
 
 def main():
