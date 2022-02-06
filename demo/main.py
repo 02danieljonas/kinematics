@@ -8,11 +8,12 @@ pygame.init()
 FPS=600
 SPEED=10
 WIDTH, HEIGHT = 900,500
-middleX, middleY=900/2,500/2
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Kinematics")
 background_color = (0,0,0)
 
+SHRINKING_SEGMENT = False
+LENGTH = None
 
 def draw_window():
     global background_color
@@ -59,7 +60,7 @@ class Segment():
 
     def __findPos2(X, Y, length, angle):
         A = length * math.cos(angle)
-        B= length * math.sin(angle)
+        B = length * math.sin(angle)
         return (X+A, Y+B)
 
 
