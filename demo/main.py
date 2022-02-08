@@ -22,12 +22,10 @@ def draw_window():
 
 
 class Segment():
-    def __init__(self, *args):#(xPos, yPos, length, angle)  or (Head, length, angle)
+    def __init__(self, *args):#(self, xPos, yPos, length, angle)  or (self, master, length, angle)
         
         if len(args)==4:
-            self.list = ["The head is ", self]
-            print(self.list, )
-
+            self.list = [self]
             self.xPos = args[0]
             self.yPos = args[1]
             self.length = args[2]
@@ -43,9 +41,8 @@ class Segment():
 
         elif len(args)==3:
             args[0].list.append(self)
-            print(args[0].list)
-            self.xPos = args[0].xPos
-            self.yPos = args[0].yPos
+            self.xPos = args[0].xPos2
+            self.yPos = args[0].yPos2
             self.length = args[1]
             # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.length, self.angle)
             self.angle = math.radians(args[2])
@@ -55,10 +52,10 @@ class Segment():
             self.xPos2 = self.xPos+self.xVariation
             self.yPos2 = self.xPos+self.yVariation
 
-            pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
+            pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-    def __findPos2(X, Y, length, angle):
+    def findPos2(X, Y, length, angle):
         A = length * math.cos(angle)
         B = length * math.sin(angle)
         return (X+A, Y+B)
@@ -80,23 +77,25 @@ class Segment():
         #to move self.ypos += speed to which ever direction you want
 
     def show(self, x, y):
-        #itterate over the list
-        self.xPos2 = x
-        self.yPos2 = y
-        pygame.draw.line(screen, (0,255,255), (x, y), (x+self.xVariation, y+self.yVariation))
+        for item in self.list:
+            item.xPos = x
+            item.yPos = y
+            item.xPos2 = item.xPos+item.xVariation
+            item.yPos2 = item.yPos+item.yVariation
+            pygame.draw.line(screen, (0,255,255), (item.xPos, item.yPos), (item.xPos2, item.yPos2))
+            y = item.yPos2
+            x = item.xPos2
 
 
+jack = Segment(0, 0, 40, 45)
+steve = Segment(jack, 40, 90)
 
-
-
-jack = Segment(0, 0, 40, 0)
-steve = Segment(jack, 40, 180)
 # steven = Segment(0, 0, 40, 3.14)
 # maker = Segment(steven, 40, 4.71239)
 
 def make_thing(x, y):
     jack.show(x, y)
-    steve.show(jack.xPos2, jack.yPos2)
+    # steve.show(jack.xPos2, jack.yPos2)
     # steven.show(x, y)
     # maker.show(steven.xPos2, steven.yPos2)
 
