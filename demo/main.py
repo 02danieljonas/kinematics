@@ -52,20 +52,26 @@ class Segment():
 
 
     def move(self, xMoveTo, yMoveTo):
-        #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
-        if self.xPos-xMoveTo<=-self.speed:
-            self.xPos+=self.speed
-        elif self.xPos-xMoveTo>=self.speed:
-            self.xPos-=self.speed
-        else:
-            self.xPos=xMoveTo
-        if self.yPos-yMoveTo<=-self.speed:
-            self.yPos+=self.speed
-        elif self.yPos-yMoveTo>=self.speed:
-            self.yPos-=self.speed
-        else:
-            self.yPos=yMoveTo
+        slope = (self.yPos-yMoveTo)/(self.xPos-xMoveTo)
 
+        #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
+        if self.xPos-xMoveTo<=-self.speed: LorR=1
+            # self.xPos+=self.speed #moves it to the right
+        elif self.xPos-xMoveTo>=self.speed: LorR=-1
+            # self.xPos-=self.speed #moves it to the left
+        else: LorR=0
+            # self.xPos=xMoveTo #teleports it to position
+            
+        
+        if self.yPos-yMoveTo<=-self.speed:UorD=1
+            # self.yPos+=self.speed #moves it up
+        elif self.yPos-yMoveTo>=self.speed:UorD=-1
+            # self.yPos-=self.speed #moves it down
+        else:UorD=0
+            # self.yPos=yMoveTo #teleports it to position
+
+        if LorR == 1 and UorD == 1:
+            pass
 
     def show(self, x, y):
         for self in self.list:
