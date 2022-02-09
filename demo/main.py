@@ -1,4 +1,4 @@
-import sys, pygame, time, random, tentacle, math
+import sys, pygame, time, random, math, numpy
 from random import randint
 
 pygame.init()
@@ -12,12 +12,6 @@ background_color = (0,0,0)
 
 SHRINKING_SEGMENT = False
 LENGTH = None
-
-def draw_window():
-    global background_color
-    pygame.display.update()
-    screen.fill(background_color)
-
 
 class Segment():
     def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, parent, length, angle, speed)
@@ -51,10 +45,44 @@ class Segment():
         self.xPos2=self.xVariation+self.xPos
         self.yPos2=self.yVariation+self.yPos
     
+    
     def findObject(self, xTarget, yTraget):
-        pass
+        # xDistanceTo = self.xPos - xTarget
+        # yDistanceTo = self.yPos - yTraget
+        # c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
+        # D=yDistanceTo/c
+        print("xTarget1 is ", xTarget)
+        print("yTraget1 is ", yTraget)
 
+        self.findVectorAngle(xTarget, yTraget)
+        # self.angle = numpy.arcsin(D)
+        self.findPos2()
 
+    def findVectorAngle(self, xTarget, yTarget):
+
+        print("xTarget2 is ", xTarget)
+        print("yTraget2 is ", yTarget)
+
+        u = (self.xPos-self.xPos2+0.0000000001, self.yPos-self.yPos2+0.0000000001)
+        print("us is ", u)
+        v = (self.xPos-xTarget+0.0000000001, self.xPos-yTarget+0.0000000001)
+        print("v is ", v)
+
+        uv = (u[0]*v[0]+u[1]*v[1])
+        print("uv is ", uv)
+
+        uMagnitude = math.sqrt(math.pow(u[0],2) + math.pow(u[1], 2))
+        print("uMagnitude is ", uMagnitude)
+
+        vMagnitude = math.sqrt(math.pow(v[0],2) + math.pow(v[1], 2))
+        print("vMagnitude is ", vMagnitude)
+
+        self.angle = math.degrees(math.acos(uv/(uMagnitude*vMagnitude)))
+        print("self.angle is ", self.angle)
+
+        
+        
+        
     def move(self, xMoveTo, yMoveTo):
         if (self.yPos-yMoveTo)!=0 and (self.xPos-xMoveTo)!=0:
             print(self.yPos-yMoveTo, self.xPos-xMoveTo)
@@ -84,25 +112,26 @@ class Segment():
 
     def show(self, x, y):
         for self in self.list:
-            #self.move() should be here
-            self.move(x, y)
-            
-            # item.xPos = x
-            # item.yPos = y
+            print("x is ", x)
+            print("y is ", y)
+
+            self.findObject(x, y)
             x = self.xPos2 = self.xPos+self.xVariation
             y = self.yPos2 = self.yPos+self.yVariation
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-jack = Segment(0, 0, 40, 45, 6)
-steve = Segment(jack, 40, 90, 6)
+jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, 6)
+# steve = Segment(jack, 40, 90, 6)
 
-steven = Segment(0, 0, 40, 0, 6)
-maker = Segment(steven, 40, 0, 6)
+
+def draw_window():
+    global background_color
+    pygame.display.update()
+    screen.fill(background_color)
 
 def make_thing(x, y):
     jack.show(x, y)
-    steven.show(x, y)
 
 
 def main():
@@ -114,6 +143,7 @@ def main():
             if event.type==pygame.QUIT:
                 run = False
         draw_window()
+        print("The first values are ", x, y)
         make_thing(x, y)
     pygame.quit()
 
