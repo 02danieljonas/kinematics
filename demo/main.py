@@ -30,12 +30,17 @@ class Segment():
             self.yPos = args[1]
             self.length = args[2]
             
-            self.angle = math.radians(args[3])
-            self.xVariation= self.length * math.cos(self.angle)
-            self.yVariation= self.length * math.sin(self.angle)
             
-            self.xPos2 = self.xPos+self.xVariation
-            self.yPos2 = self.xPos+self.yVariation
+            
+            self.angle = math.radians(args[3])
+            
+            self.xVariation, self.yVariation, self.xPos2, self.yPos2 = self.findPos2(self.xPos, self.yPos, self.length, self.angle)
+            
+            # self.xVariation= self.length * math.cos(self.angle)
+            # self.yVariation= self.length * math.sin(self.angle)
+            
+            # self.xPos2 = self.xPos+self.xVariation
+            # self.yPos2 = self.yPos+self.yVariation
 
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
@@ -44,33 +49,28 @@ class Segment():
             self.xPos = args[0].xPos2
             self.yPos = args[0].yPos2
             self.length = args[1]
-            # self.xPos2, self.yPos2 = findPos2(self.xPos, self.yPos, self.length, self.angle)
-            self.angle = math.radians(args[2])
-            self.xVariation= self.length * math.cos(self.angle)
-            self.yVariation= self.length * math.sin(self.angle)
             
-            self.xPos2 = self.xPos+self.xVariation
-            self.yPos2 = self.xPos+self.yVariation
+            self.angle = math.radians(args[2])
+
+            self.xVariation, self.yVariation, self.xPos2, self.yPos2 = self.findPos2(self.xPos, self.yPos, self.length, self.angle)
+            
+            # self.xVariation= self.length * math.cos(self.angle)
+            # self.yVariation= self.length * math.sin(self.angle)
+            
+            # self.xPos2 = self.xPos+self.xVariation
+            # self.yPos2 = self.yPos+self.yVariation
 
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-    def findPos2(X, Y, length, angle):
+    def findPos2(Self, X, Y, length, angle):
         A = length * math.cos(angle)
         B = length * math.sin(angle)
-        return (X+A, Y+B)
+        return A, B, X+A, Y+B
+        self.xVariation, self.xVariation, self.xPos2, self.yPos2
 
 
-    def update(self, x, y):
-        self.xPos = x
-        self.yPos = y
-        self.xVariation= self.length * math.cos(self.angle)
-        self.yVariation= self.length * math.sin(self.angle)
 
-        self.xPos2 = self.xPos+self.xVariation
-        self.yPos2 = self.xPos+self.yVariation
-        
-        pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
     def move(x, y):
         pass
         #to move self.xpos += speed to which ever direction you want
@@ -80,24 +80,24 @@ class Segment():
         for item in self.list:
             item.xPos = x
             item.yPos = y
-            item.xPos2 = item.xPos+item.xVariation
-            item.yPos2 = item.yPos+item.yVariation
+            x = item.xPos2 = item.xPos+item.xVariation
+            y = item.yPos2 = item.yPos+item.yVariation
             pygame.draw.line(screen, (0,255,255), (item.xPos, item.yPos), (item.xPos2, item.yPos2))
-            y = item.yPos2
-            x = item.xPos2
 
 
 jack = Segment(0, 0, 40, 45)
 steve = Segment(jack, 40, 90)
 
-# steven = Segment(0, 0, 40, 3.14)
-# maker = Segment(steven, 40, 4.71239)
+steven = Segment(0, 0, 40, 0)
+maker = Segment(steven, 40, 0)
 
 def make_thing(x, y):
     jack.show(x, y)
-    # steve.show(jack.xPos2, jack.yPos2)
-    # steven.show(x, y)
-    # maker.show(steven.xPos2, steven.yPos2)
+    steven.show(x, y)
+
+
+
+
 
 
 def main():
