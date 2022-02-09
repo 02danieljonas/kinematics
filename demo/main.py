@@ -20,7 +20,7 @@ def draw_window():
 
 
 class Segment():
-    def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, master, length, angle, speed)
+    def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, parent, length, angle, speed)
         
         if len(args)==5:
             self.list = [self]
@@ -29,7 +29,7 @@ class Segment():
             self.length = args[2]
             self.speed = args[4]
             self.angle = math.radians(args[3])
-            self.xVariation, self.yVariation, self.xPos2, self.yPos2 = self.findPos2(self.xPos, self.yPos, self.length, self.angle)
+            self.findPos2()
             
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
@@ -40,38 +40,47 @@ class Segment():
             self.length = args[1]
             self.speed = args[3]
             self.angle = math.radians(args[2])
-            self.xVariation, self.yVariation, self.xPos2, self.yPos2 = self.findPos2(self.xPos, self.yPos, self.length, self.angle)
+            self.findPos2()
 
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-    def findPos2(Self, X, Y, length, angle):
-        A = length * math.cos(angle)
-        B = length * math.sin(angle)
-        return A, B, X+A, Y+B
+    def findPos2(self):
+        self.xVariation = self.length * math.cos(self.angle)
+        self.yVariation = self.length * math.sin(self.angle)
+        self.xPos2=self.xVariation+self.xPos
+        self.yPos2=self.yVariation+self.yPos
+    
+    def findObject(self, xTarget, yTraget):
+        pass
 
 
     def move(self, xMoveTo, yMoveTo):
-        slope = (self.yPos-yMoveTo)/(self.xPos-xMoveTo)
-
-        #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
-        if self.xPos-xMoveTo<=-self.speed: LorR=1
-            # self.xPos+=self.speed #moves it to the right
-        elif self.xPos-xMoveTo>=self.speed: LorR=-1
-            # self.xPos-=self.speed #moves it to the left
-        else: LorR=0
-            # self.xPos=xMoveTo #teleports it to position
+        if (self.yPos-yMoveTo)!=0 and (self.xPos-xMoveTo)!=0:
+            print(self.yPos-yMoveTo, self.xPos-xMoveTo)
+            slope = (self.yPos-yMoveTo)/(self.xPos-xMoveTo)
+            #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
+            if self.xPos-xMoveTo<=-self.speed: LorR=1
+                # self.xPos+=self.speed #moves it to the right
+            elif self.xPos-xMoveTo>=self.speed: LorR=-1
+                # self.xPos-=self.speed #moves it to the left
+            else: LorR=0
+                # self.xPos=xMoveTo #teleports it to position
+                
             
-        
-        if self.yPos-yMoveTo<=-self.speed:UorD=1
-            # self.yPos+=self.speed #moves it up
-        elif self.yPos-yMoveTo>=self.speed:UorD=-1
-            # self.yPos-=self.speed #moves it down
-        else:UorD=0
-            # self.yPos=yMoveTo #teleports it to position
+            if self.yPos-yMoveTo<=-self.speed:UorD=1
+                # self.yPos+=self.speed #moves it up
+            elif self.yPos-yMoveTo>=self.speed:UorD=-1
+                # self.yPos-=self.speed #moves it down
+            else:UorD=0
+                # self.yPos=yMoveTo #teleports it to position
 
-        if LorR == 1 and UorD == 1:
-            pass
+            if LorR == 1 and UorD == 1:
+                pass
+        else:
+            self.xPos=xMoveTo #teleports it to position
+            self.yPos=yMoveTo #teleports it to position
+
 
     def show(self, x, y):
         for self in self.list:
