@@ -52,13 +52,13 @@ class Segment():
 
 
     def move(self, xMoveTo, yMoveTo):
+        #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
         if self.xPos-xMoveTo<=-self.speed:
             self.xPos+=self.speed
         elif self.xPos-xMoveTo>=self.speed:
             self.xPos-=self.speed
         else:
             self.xPos=xMoveTo
-        
         if self.yPos-yMoveTo<=-self.speed:
             self.yPos+=self.speed
         elif self.yPos-yMoveTo>=self.speed:
