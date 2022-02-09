@@ -47,15 +47,18 @@ class Segment():
     
     
     def findObject(self, xTarget, yTraget):
-        # xDistanceTo = self.xPos - xTarget
-        # yDistanceTo = self.yPos - yTraget
-        # c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
-        # D=yDistanceTo/c
+        xDistanceTo = self.xPos - xTarget
+        yDistanceTo = self.yPos - yTraget
+        c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
+        D=yDistanceTo/c
+
+        self.angle = -numpy.arcsin(D)
+
         print("xTarget1 is ", xTarget)
         print("yTraget1 is ", yTraget)
-
+        
         self.findVectorAngle(xTarget, yTraget)
-        # self.angle = numpy.arcsin(D)
+
         self.findPos2()
 
     def findVectorAngle(self, xTarget, yTarget):
@@ -63,9 +66,9 @@ class Segment():
         print("xTarget2 is ", xTarget)
         print("yTraget2 is ", yTarget)
 
-        u = (self.xPos-self.xPos2+0.0000000001, self.yPos-self.yPos2+0.0000000001)
+        u = (self.xPos2-self.xPos+0.0000000001, self.yPos2-self.yPos+0.0000000001)
         print("us is ", u)
-        v = (self.xPos-xTarget+0.0000000001, self.xPos-yTarget+0.0000000001)
+        v = (xTarget-self.xPos+0.0000000001, yTarget-self.xPos+0.0000000001)
         print("v is ", v)
 
         uv = (u[0]*v[0]+u[1]*v[1])
