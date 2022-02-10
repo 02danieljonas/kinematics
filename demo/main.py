@@ -28,9 +28,12 @@ class Segment():
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
         elif len(args)==4:
-            args[0].list.append(self)
-            self.xPos = args[0].xPos2
-            self.yPos = args[0].yPos2
+            self.parent = args[0]
+            self.parent.list.append(self)
+            self.list = [self]
+            
+            self.xPos = self.parent.xPos2
+            self.yPos = self.parent.yPos2
             self.length = args[1]
             self.speed = args[3]
             self.angle = math.radians(args[2])
@@ -47,48 +50,63 @@ class Segment():
     
     
     def findObject(self, xTarget, yTraget):
-        xDistanceTo = self.xPos - xTarget
-        yDistanceTo = self.yPos - yTraget
-        c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
-        D=yDistanceTo/c
-
-        self.angle = -numpy.arcsin(D)
-
-        print("xTarget1 is ", xTarget)
-        print("yTraget1 is ", yTraget)
         
-        self.findVectorAngle(xTarget, yTraget)
+        if hasattr(self, "parent"):
+            self.xPos=self.parent.xPos2
+            self.yPos=self.parent.yPos2
+            self.angle +=self.speed
+
+        else:
+            self.angle +=0.01
+
+        # xDistanceTo = self.xPos - xTarget
+        # yDistanceTo = self.yPos - yTraget
+        # c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
+        # print("The c is ", c)
+        
+        # D=yDistanceTo/c+0.0000000001
+        
+        # print("The d is ", D)
+
+        # self.angle = -numpy.arcsin(D)
+
+        # print("The angle is ", self.angle)
+        
+        # print("xTarget1 is ", xTarget)
+        # print("yTraget1 is ", yTraget)
+        
+        # self.findVectorAngle(xTarget, yTraget)
 
         self.findPos2()
 
     def findVectorAngle(self, xTarget, yTarget):
 
-        print("xTarget2 is ", xTarget)
-        print("yTraget2 is ", yTarget)
+        # print("xTarget2 is ", xTarget)
+        # print("yTraget2 is ", yTarget)
 
-        u = (self.xPos2-self.xPos+0.0000000001, self.yPos2-self.yPos+0.0000000001)
-        print("us is ", u)
-        v = (xTarget-self.xPos+0.0000000001, yTarget-self.xPos+0.0000000001)
-        print("v is ", v)
+        u = (self.xPos-self.xPos+0.0000000001, self.yPos-self.yPos+0.0000000001)
+        # print("us is ", u)
+        v = (self.xPos2-xTarget+0.0000000001, self.xPos2-yTarget+0.0000000001)
+        # print("v is ", v)
 
         uv = (u[0]*v[0]+u[1]*v[1])
-        print("uv is ", uv)
+        # print("uv is ", uv)
 
         uMagnitude = math.sqrt(math.pow(u[0],2) + math.pow(u[1], 2))
-        print("uMagnitude is ", uMagnitude)
+        # print("uMagnitude is ", uMagnitude)
 
         vMagnitude = math.sqrt(math.pow(v[0],2) + math.pow(v[1], 2))
-        print("vMagnitude is ", vMagnitude)
+        # print("vMagnitude is ", vMagnitude)
 
-        self.angle = math.degrees(math.acos(uv/(uMagnitude*vMagnitude)))
-        print("self.angle is ", self.angle)
+        self.angle = math.degrees(math.acos(uv/(uMagnitude*vMagnitude+0.0000000001)))
+        # print("self.angle is ", self.angle)
 
         
         
         
     def move(self, xMoveTo, yMoveTo):
         if (self.yPos-yMoveTo)!=0 and (self.xPos-xMoveTo)!=0:
-            print(self.yPos-yMoveTo, self.xPos-xMoveTo)
+            # print(self.yPos-yMoveTo, self.xPos-xMoveTo)
             slope = (self.yPos-yMoveTo)/(self.xPos-xMoveTo)
             #TODO: make it follow a straight line, instead of moving x and y independently, use maths from HS
             if self.xPos-xMoveTo<=-self.speed: LorR=1
@@ -115,8 +133,8 @@ class Segment():
 
     def show(self, x, y):
         for self in self.list:
-            print("x is ", x)
-            print("y is ", y)
+            # print("x is ", x)
+            # print("y is ", y)
 
             self.findObject(x, y)
             x = self.xPos2 = self.xPos+self.xVariation
@@ -124,8 +142,13 @@ class Segment():
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, 6)
-# steve = Segment(jack, 40, 90, 6)
+jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, .01)
+pete = Segment(jack, 40, 90, .01)
+peter = Segment(pete, 400, 90, 6)
+
+steve = Segment(WIDTH/4, HEIGHT/2, 40, 45, .01)
+stev = Segment(steve, 40, 90, .01)#found an error can't connect code like this
+
 
 
 def draw_window():
@@ -135,6 +158,7 @@ def draw_window():
 
 def make_thing(x, y):
     jack.show(x, y)
+    steve.show(x,y)
 
 
 def main():
@@ -146,7 +170,7 @@ def main():
             if event.type==pygame.QUIT:
                 run = False
         draw_window()
-        print("The first values are ", x, y)
+        # print("The first values are ", x, y)
         make_thing(x, y)
     pygame.quit()
 
