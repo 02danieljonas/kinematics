@@ -16,7 +16,7 @@ LENGTH = None
 class Segment():
     def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, parent, length, angle, speed)
         
-        if len(args)==5:
+        if len(args)==5: #(self, xPos, yPos, length, angle, speed)
             self.list = [self]
             self.xPos = args[0]
             self.yPos = args[1]
@@ -27,10 +27,9 @@ class Segment():
             
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
 
-        elif len(args)==4:
+        elif len(args)==4: #(self, parent, length, angle, speed) change it to (self, captain, parent, length, angle, speed)
             self.parent = args[0]
             self.parent.list.append(self)
-            self.list = [self]
             
             self.xPos = self.parent.xPos2
             self.yPos = self.parent.yPos2
@@ -58,24 +57,6 @@ class Segment():
 
         else:
             self.angle +=0.01
-
-        # xDistanceTo = self.xPos - xTarget
-        # yDistanceTo = self.yPos - yTraget
-        # c = math.sqrt((xDistanceTo*xDistanceTo)+(yDistanceTo*yDistanceTo))
-        # print("The c is ", c)
-        
-        # D=yDistanceTo/c+0.0000000001
-        
-        # print("The d is ", D)
-
-        # self.angle = -numpy.arcsin(D)
-
-        # print("The angle is ", self.angle)
-        
-        # print("xTarget1 is ", xTarget)
-        # print("yTraget1 is ", yTraget)
-        
-        # self.findVectorAngle(xTarget, yTraget)
 
         self.findPos2()
 
@@ -144,7 +125,7 @@ class Segment():
 
 jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, .01)
 pete = Segment(jack, 40, 90, .01)
-peter = Segment(pete, 400, 90, 6)
+peter = Segment(jack, 100, 0, 6)
 
 steve = Segment(WIDTH/4, HEIGHT/2, 40, 45, .01)
 stev = Segment(steve, 40, 90, .01)#found an error can't connect code like this
