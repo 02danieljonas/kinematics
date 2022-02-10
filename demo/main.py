@@ -14,31 +14,31 @@ SHRINKING_SEGMENT = False
 LENGTH = None
 
 class Segment():
-    def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, parent, length, angle, speed)
+    def __init__(self, *args):#(self, xPos, yPos, length, angle, speed)  or (self, captain, parent, length, angle, speed)
         
-        if len(args)==5: #(self, xPos, yPos, length, angle, speed)
+        if isinstance(args[0], float) or isinstance(args[0], int): #(self, xPos, yPos, length, angle, speed)
             self.list = [self]
             self.xPos = args[0]
             self.yPos = args[1]
             self.length = args[2]
             self.speed = args[4]
             self.angle = math.radians(args[3])
-            self.findPos2()
-            
+            self.findPos2()            
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
-
-        elif len(args)==4: #(self, parent, length, angle, speed) change it to (self, captain, parent, length, angle, speed)
-            self.parent = args[0]
-            self.parent.list.append(self)
             
+        elif isinstance(args[0], Segment): #(self, parent, length, angle, speed) change it to (self, captain, parent, length, angle, speed)
+            self.captain = args[0]
+            args[0].list.append(self)
+            self.parent = args[1]
             self.xPos = self.parent.xPos2
             self.yPos = self.parent.yPos2
-            self.length = args[1]
-            self.speed = args[3]
-            self.angle = math.radians(args[2])
+            self.length = args[2]
+            self.speed = args[4]
+            self.angle = math.radians(args[3])
             self.findPos2()
-
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
+        else:
+            raise Exception("Incorrect Format")
 
 
     def findPos2(self):
@@ -124,12 +124,11 @@ class Segment():
 
 
 jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, .01)
-pete = Segment(jack, 40, 90, .01)
-peter = Segment(jack, 100, 0, 6)
+pete = Segment(jack, jack, 40, 90, .01)
+peter = Segment(jack, pete, 100, 0, 6)
 
-steve = Segment(WIDTH/4, HEIGHT/2, 40, 45, .01)
-stev = Segment(steve, 40, 90, .01)#found an error can't connect code like this
-
+# steve = Segment(WIDTH/4, HEIGHT/2, 40, 45, .01)
+# stev = Segment(steve, 40, 90, .01)#found an error can't connect code like this
 
 
 def draw_window():
@@ -139,7 +138,7 @@ def draw_window():
 
 def make_thing(x, y):
     jack.show(x, y)
-    steve.show(x,y)
+    # steve.show(x,y)
 
 
 def main():
