@@ -53,11 +53,10 @@ class Segment():
         if hasattr(self, "parent"):
             self.xPos=self.parent.xPos2
             self.yPos=self.parent.yPos2
-            self.angle +=self.speed
-
+            self.angle += self.speed + self.parent.angle
         else:
-            self.angle +=0.01
-
+            self.angle +=self.speed
+        
         self.findPos2()
 
     def findVectorAngle(self, xTarget, yTarget):
@@ -82,9 +81,7 @@ class Segment():
         self.angle = math.degrees(math.acos(uv/(uMagnitude*vMagnitude+0.0000000001)))
         # print("self.angle is ", self.angle)
 
-        
-        
-        
+
     def move(self, xMoveTo, yMoveTo):
         if (self.yPos-yMoveTo)!=0 and (self.xPos-xMoveTo)!=0:
             # print(self.yPos-yMoveTo, self.xPos-xMoveTo)
@@ -116,16 +113,21 @@ class Segment():
         for self in self.list:
             # print("x is ", x)
             # print("y is ", y)
-
+            
             self.findObject(x, y)
-            x = self.xPos2 = self.xPos+self.xVariation
-            y = self.yPos2 = self.yPos+self.yVariation
+            
+            x = self.xPos2
+            y = self.yPos2
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
 jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, .01)
-pete = Segment(jack, jack, 40, 90, .01)
-peter = Segment(jack, pete, 100, 0, 6)
+pete = Segment(jack, jack, 40, 90, .0)
+# peter = Segment(jack, pete, 10, 0, .0)
+# peter = Segment(jack, peter, 20, 10, .0)
+# peter = Segment(jack, peter, 40, 20, .0)
+# peter = Segment(jack, peter, 60, 30, .0)
+
 
 # steve = Segment(WIDTH/4, HEIGHT/2, 40, 45, .01)
 # stev = Segment(steve, 40, 90, .01)#found an error can't connect code like this
