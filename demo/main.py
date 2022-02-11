@@ -1,6 +1,8 @@
 import sys, pygame, time, random, math, numpy
 from random import randint
 
+#C:\Users\Daniel\Desktop\Programs\Python\Programming\kinematics\kinematics_venv\Scripts\python.exe C:\Users\Daniel\Desktop\Programs\Python\Programming\kinematics\kinematics_venv\Scripts\pip.exe install ~~~
+
 pygame.init()
 
 FPS=600
