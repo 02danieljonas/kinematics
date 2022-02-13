@@ -123,8 +123,8 @@ class Segment():
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
 
 
-jack = Segment(WIDTH/2, HEIGHT/2, 40, 45, .01)
-pete = Segment(jack, jack, 40, 90, .0)
+jack = Segment(200, 100, 40, 270, 0)
+# pete = Segment(jack, jack, 40, 90, .0)
 # peter = Segment(jack, pete, 10, 0, .0)
 # peter = Segment(jack, peter, 20, 10, .0)
 # peter = Segment(jack, peter, 40, 20, .0)
@@ -156,6 +156,9 @@ def main():
         draw_window()
         # print("The first values are ", x, y)
         make_thing(x, y)
+        if pygame.display.get_active():
+            run=False
+            
     pygame.quit()
 
 
