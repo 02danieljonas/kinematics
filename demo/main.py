@@ -1,7 +1,6 @@
 import sys, pygame, time, random, math, numpy
 from random import randint
 
-#C:\Users\Daniel\Desktop\Programs\Python\Programming\kinematics\kinematics_venv\Scripts\python.exe C:\Users\Daniel\Desktop\Programs\Python\Programming\kinematics\kinematics_venv\Scripts\pip.exe install ~~~
 
 pygame.init()
 
@@ -28,15 +27,15 @@ class Segment():
             self.findPos2()            
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos, self.yPos2))
             
-        elif isinstance(args[0], Segment): #(self, parent, length, angle, speed) change it to (self, captain, parent, length, angle, speed)
+        elif isinstance(args[0], Segment): #(self, captain, parent, length, angle, speed) change to (self, captain, length, angle, speed)
             self.captain = args[0]
-            args[0].list.append(self)
-            self.parent = args[1]
+            self.captain.list.append(self)
+            self.parent = self.captain.list[len(self.captain.list)-2]
             self.xPos = self.parent.xPos2
             self.yPos = self.parent.yPos2
-            self.length = args[2]
-            self.speed = args[4]
-            self.angle = math.radians(args[3])
+            self.length = args[1]
+            self.speed = args[3]
+            self.angle = math.radians(args[2])
             self.findPos2()
             pygame.draw.line(screen, (0,255,255), (self.xPos, self.yPos), (self.xPos2, self.yPos2))
         else:
@@ -51,14 +50,12 @@ class Segment():
     
     
     def findObject(self, xTarget, yTraget):
-        
         if hasattr(self, "parent"):
             self.xPos=self.parent.xPos2
             self.yPos=self.parent.yPos2
             self.angle += self.speed + self.parent.angle
         else:
             self.angle +=self.speed
-        
         self.findPos2()
 
     def findVectorAngle(self, xTarget, yTarget):
@@ -124,7 +121,7 @@ class Segment():
 
 
 jack = Segment(200, 100, 40, 270, 0)
-# pete = Segment(jack, jack, 40, 90, .0)
+pete = Segment(jack, 40, 90, .0)
 # peter = Segment(jack, pete, 10, 0, .0)
 # peter = Segment(jack, peter, 20, 10, .0)
 # peter = Segment(jack, peter, 40, 20, .0)
@@ -142,11 +139,13 @@ def draw_window():
 
 def make_thing(x, y):
     jack.show(x, y)
-    # steve.show(x,y)
-
 
 def main():
     run = True
+    from time import time
+    startTime = time()
+    print(startTime)
+    
     while run:
         pygame.time.Clock().tick(FPS)
         x, y =pygame.mouse.get_pos()
@@ -156,11 +155,12 @@ def main():
         draw_window()
         # print("The first values are ", x, y)
         make_thing(x, y)
-        if pygame.display.get_active():
+        if pygame.display.get_active() and (time()-startTime>4):
             run=False
-            
+
     pygame.quit()
 
 
 if __name__ == "__main__":
     main()
+    print("Closing")
